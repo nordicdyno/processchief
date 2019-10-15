@@ -1,5 +1,6 @@
 GGPC_GW_DIR = $(shell go list -f '{{ .Dir }}' -m github.com/grpc-ecosystem/grpc-gateway)
 
+# go get github.com/grpc-ecosystem/grpc-gateway
 .PHONY: pb
 pb:
 	go list -f '{{ .Dir }}' -m github.com/grpc-ecosystem/grpc-gateway
