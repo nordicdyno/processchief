@@ -58,12 +58,13 @@ func NewSupervisor() *Supervisor {
 }
 
 func (s *Supervisor) StopAll() {
+	s.servicesMu.Lock()
+	defer s.servicesMu.Unlock()
+
 	fmt.Println("StopAll() start")
-	names := s.AllServiceNames()
-	fmt.Println(names)
-	for _, name := range names {
+	for name := range s.services {
 		fmt.Printf("wait %v...\n", name)
-		err := s.StopService(name)
+		err := s.stopService(name)
 		if err != nil {
 			fmt.Printf("%v service not found while stopped\n", name)
 		} else {
@@ -76,6 +77,10 @@ func (s *Supervisor) StopAll() {
 func (s *Supervisor) StopService(name string) error {
 	s.servicesMu.Lock()
 	defer s.servicesMu.Unlock()
+	return s.stopService(name)
+}
+
+func (s *Supervisor) stopService(name string) error {
 	svc, ok := s.services[name]
 	if !ok {
 		return fmt.Errorf("service with name '%v' not found", name)
