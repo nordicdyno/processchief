@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+
+service ServicesAPI {
+    // AddService adds service.
+    rpc AddService (NewService) returns (Nope) {
+        option (google.api.http) = {
+			post: "/add"
+			body: "*"
+		};
+    }
+
+    // UpdateService updates service.
+    rpc UpdateService (NewService) returns (Nope) {
+        option (google.api.http) = {
+			post: "/update"
+			body: "*"
+		};
+    }
+
+    // AllServices returns all registered services.
+    rpc AllServices (Nope) returns (Services) {
+        option (google.api.http) = {
+			post: "/all"
+			body: "*"
+		};
+    }
+
+    // GetService returns service description for provided name.
+    rpc GetService (ServiceName) returns (Service) {
+        option (google.api.http) = {
+			post: "/get"
+			body: "*"
+		};
+    }
+}
+
+message Nope {}
+
+message NewService {
+    string name = 1;
+    string commandline = 2;
+}
+
+message Service {
+    string name = 1;
+    string commandline = 2;
+    string status = 3;
+    int32 pid = 4;
+}
+
+message ServiceName {
+    string name = 1;
+}
+
+// Services contains service names.
+message Services {
+    repeated Service service = 1;
+}

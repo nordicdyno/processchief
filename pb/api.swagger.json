@@ -1,0 +1,181 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "pb/api.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/add": {
+      "post": {
+        "summary": "AddService adds service.",
+        "operationId": "AddService",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbNope"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbNewService"
+            }
+          }
+        ],
+        "tags": [
+          "ServicesAPI"
+        ]
+      }
+    },
+    "/all": {
+      "post": {
+        "summary": "AllServices returns all registered services.",
+        "operationId": "AllServices",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbServices"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbNope"
+            }
+          }
+        ],
+        "tags": [
+          "ServicesAPI"
+        ]
+      }
+    },
+    "/get": {
+      "post": {
+        "summary": "GetService returns service description for provided name.",
+        "operationId": "GetService",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbService"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbServiceName"
+            }
+          }
+        ],
+        "tags": [
+          "ServicesAPI"
+        ]
+      }
+    },
+    "/update": {
+      "post": {
+        "summary": "UpdateService updates service.",
+        "operationId": "UpdateService",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbNope"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbNewService"
+            }
+          }
+        ],
+        "tags": [
+          "ServicesAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "pbNewService": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "commandline": {
+          "type": "string"
+        }
+      }
+    },
+    "pbNope": {
+      "type": "object"
+    },
+    "pbService": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "commandline": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbServiceName": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "pbServices": {
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbService"
+          }
+        }
+      },
+      "description": "Services contains service names."
+    }
+  }
+}
