@@ -64,10 +64,6 @@ func (s *ControlServer) init(ctx context.Context) {
 	}
 }
 
-func (s *ControlServer) start(ctx context.Context) {
-
-}
-
 func (s *ControlServer) Start(ctx context.Context) error {
 	s.init(ctx)
 	s.Stop(ctx)
@@ -82,7 +78,7 @@ func (s *ControlServer) stop(ctx context.Context) {
 	log.Println("shutting down http...")
 	err := s.server.http.Shutdown(ctx)
 	if err != nil {
-		log.Printf("Shutdown error")
+		log.Printf("Shutdown error: %v", err)
 	}
 	close(s.fin)
 }

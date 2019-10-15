@@ -14,14 +14,16 @@ func main() {
 	srv := supervisor.NewControlServer(super)
 
 	ctx, _ := context.WithCancel(context.Background())
-	// fin := make(chan struct{}, 1)
+
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 
 	go func() {
 		err := srv.Start(ctx)
-		if err != nil {
-			log.Fatal("start error: ", err)
+		super.StopAll()
+
+		if err != nil && err.Error() != "http: Server closed" {
+			log.Fatal("start error:", err)
 		}
 	}()
 
