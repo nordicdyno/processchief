@@ -70,8 +70,9 @@ func main() {
 		}
 	}()
 
+	stop := make(chan bool)
+	tick := time.Tick(time.Second) // move to flag
 	go func() {
-		tick := time.Tick(time.Second)
 		for {
 			select {
 			case <-tick:
@@ -101,6 +102,9 @@ func main() {
 					bufWriter = bufio.NewWriter(f)
 					w = bufWriter
 				}
+			case <-stop:
+				flush()
+				return
 			}
 		}
 	}()
@@ -123,7 +127,7 @@ func main() {
 				if debug {
 					log.Println("got sigINT")
 				}
-				flush()
+				stop <- true
 				close(finish)
 			}
 		}
