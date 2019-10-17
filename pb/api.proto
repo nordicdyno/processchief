@@ -4,35 +4,68 @@ package pb;
 
 import "google/api/annotations.proto";
 
-service ServicesAPI {
-    // AddService adds service.
-    rpc AddService (NewService) returns (Nope) {
+// ControlAPI controls processes chief.
+service ControlAPI {
+    // LoggerSignal send signal to logger.
+    rpc LoggerSignal (Signal) returns (Result) {
         option (google.api.http) = {
-			post: "/add"
+			post: "/logger/signal"
 			body: "*"
 		};
     }
 
-    // UpdateService updates service.
-    rpc UpdateService (NewService) returns (Nope) {
+    // CommandSignal send signal to process.
+    rpc ProcessSignal (Signal) returns (Result) {
         option (google.api.http) = {
-			post: "/update"
+			post: "/proc/signal"
 			body: "*"
 		};
     }
 
-    // AllServices returns all registered services.
-    rpc AllServices (Nope) returns (Services) {
+    // AllProcesses returns all registered processes.
+    rpc AllProcesses (Nope) returns (ProcessesStatus) {
         option (google.api.http) = {
-			post: "/all"
+			post: "/procs"
 			body: "*"
 		};
     }
 
-    // GetService returns service description for provided name.
-    rpc GetService (ServiceName) returns (Service) {
+    // Halt stops supervisor.
+    rpc Halt (Nope) returns (Result) {
         option (google.api.http) = {
-			post: "/get"
+			post: "/halt"
+			body: "*"
+		};
+    }
+
+    // AddProcess adds process.
+    rpc AddProcess (SetProc) returns (Result) {
+        option (google.api.http) = {
+			post: "/proc/add"
+			body: "*"
+		};
+    }
+
+    // UpdateProcess updates process.
+    rpc UpdateProcess (SetProc) returns (Result) {
+        option (google.api.http) = {
+			post: "/proc/update"
+			body: "*"
+		};
+    }
+
+    // DeleteProcess deletes process.
+    rpc DeleteProcess (ProcName) returns (Result) {
+        option (google.api.http) = {
+			post: "/proc/delete"
+			body: "*"
+		};
+    }
+
+    // GetProcess returns process status by name.
+    rpc GetProcess (ProcName) returns (ProcStatus) {
+        option (google.api.http) = {
+			post: "/proc/get"
 			body: "*"
 		};
     }
@@ -40,23 +73,39 @@ service ServicesAPI {
 
 message Nope {}
 
-message NewService {
-    string name = 1;
-    string commandline = 2;
+message Result {
+    string description = 1;
 }
 
-message Service {
+message Signal {
     string name = 1;
-    string commandline = 2;
-    string status = 3;
-    int32 pid = 4;
+    int32 signal = 2;
 }
 
-message ServiceName {
+message SetProc {
+    bool create = 1;
+    Process process = 2;
+}
+
+message ProcStatus {
+    int32 pid = 1;
+    string state = 2;
+    Process process = 3;
+}
+
+
+message Process {
+    string name = 1;
+    string commandLine = 2;
+    string loggerCommandLine = 3;
+    string workingDir = 4;
+}
+
+message ProcName {
     string name = 1;
 }
 
-// Services contains service names.
-message Services {
-    repeated Service service = 1;
+// ProcessesStatus contains processes statuses.
+message ProcessesStatus {
+    repeated ProcStatus statuses = 1;
 }

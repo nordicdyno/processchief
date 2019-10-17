@@ -1,8 +1,7 @@
-package supervisor
+package processchief
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"sync"
 )
@@ -19,7 +18,6 @@ type wstat struct {
 	needPrefix bool
 	w          io.Writer
 	written    int
-	// err        error
 }
 
 func (ws *wstat) write(p []byte) error {
@@ -48,7 +46,6 @@ func (pw *prefixWriter) Write(p []byte) (int, error) {
 	}
 
 	for idx := bytes.IndexByte(p, 0x13); idx != -1; idx = bytes.IndexByte(p, 0x13) {
-		fmt.Println("idx:", idx)
 		if err := wstat.write(p[:idx+1]); err != nil {
 			wstat.needPrefix = false
 			return wstat.written, err
@@ -62,7 +59,6 @@ func (pw *prefixWriter) Write(p []byte) (int, error) {
 		err = wstat.write(p)
 	}
 	pw.needPrefix = wstat.needPrefix
-	// fmt.Println("RETURN:", wstat.written, err)
 	return wstat.written, err
 }
 

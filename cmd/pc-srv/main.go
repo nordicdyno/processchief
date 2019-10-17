@@ -6,12 +6,12 @@ import (
 	"os"
 	"os/signal"
 
-	supervisor "github.com/nordicdyno/simple-hypervisor"
+	"github.com/nordicdyno/processchief"
 )
 
 func main() {
-	super := supervisor.NewSupervisor()
-	srv := supervisor.NewControlServer(super)
+	chief := processchief.NewChief()
+	srv := processchief.NewControlServer(chief)
 
 	ctx, _ := context.WithCancel(context.Background())
 
@@ -20,7 +20,7 @@ func main() {
 
 	go func() {
 		err := srv.Start(ctx)
-		super.StopAll()
+		chief.StopAll()
 
 		if err != nil && err.Error() != "http: Server closed" {
 			log.Fatal("start error:", err)
@@ -29,5 +29,5 @@ func main() {
 
 	<-c
 	srv.Stop(ctx)
-	super.StopAll()
+	chief.StopAll()
 }

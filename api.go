@@ -1,11 +1,13 @@
-package supervisor
+package processchief
 
 import (
 	"context"
 	"net"
 	"net/http"
+	"os"
+	"time"
 
-	"github.com/nordicdyno/simple-hypervisor/pb"
+	"github.com/nordicdyno/processchief/pb"
 )
 
 type serverWithContext struct {
@@ -15,44 +17,86 @@ type serverWithContext struct {
 }
 
 type ControlServer struct {
-	super *Supervisor
+	chief *Chief
 
 	server *serverWithContext
 	fin    chan struct{}
 }
 
-var _ pb.ServicesAPIServer = &ControlServer{}
+var _ pb.ControlAPIServer = &ControlServer{}
 
 var nope = &pb.Nope{}
 
-func NewControlServer(super *Supervisor) *ControlServer {
+func NewControlServer(chief *Chief) *ControlServer {
 	return &ControlServer{
-		super: super,
+		chief: chief,
 	}
 }
 
-func (s *ControlServer) AddService(ctx context.Context, svc *pb.NewService) (*pb.Nope, error) {
-	return nope, s.super.AddService(svc.Name, svc.Commandline)
-}
-
-func (s *ControlServer) UpdateService(ctx context.Context, svc *pb.NewService) (*pb.Nope, error) {
-	return nope, s.super.UpdateService(svc.Name, svc.Commandline)
-}
-
-// AllServices returns all registered services.
-func (s *ControlServer) AllServices(context.Context, *pb.Nope) (*pb.Services, error) {
-	result := &pb.Services{}
-	for _, name := range s.super.AllServiceNames() {
-		svc, err := s.super.GetService(name)
-		if err != nil {
-			continue
-		}
-		result.Service = append(result.Service, svc)
+func (cs *ControlServer) ProcessSignal(ctx context.Context, svcSig *pb.Signal) (*pb.Result, error) {
+	err := cs.chief.ProcessSignal(svcSig.Name, svcSig.Signal)
+	if err != nil {
+		return nil, err
 	}
-	return result, nil
+	return &pb.Result{Description: "OK"}, nil
 }
 
-// GetService returns service description for provided topic name.
-func (s *ControlServer) GetService(ctx context.Context, name *pb.ServiceName) (*pb.Service, error) {
-	return s.super.GetService(name.Name)
+func (cs *ControlServer) LoggerSignal(ctx context.Context, svcSig *pb.Signal) (*pb.Result, error) {
+	err := cs.chief.LoggerSignal(svcSig.Name, svcSig.Signal)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.Result{Description: "OK"}, nil
+}
+
+func (cs *ControlServer) AddProcess(ctx context.Context, pSet *pb.SetProc) (*pb.Result, error) {
+	p := pSet.Process
+	err := cs.chief.AddProcess(p.Name, *p)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.Result{Description: "OK"}, nil
+}
+
+func (cs *ControlServer) UpdateProcess(ctx context.Context, pSet *pb.SetProc) (*pb.Result, error) {
+	p := pSet.Process
+	err := cs.chief.UpdateProcess(p.Name, *p)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.Result{Description: "OK"}, nil
+}
+
+// AllProcesses returns all registered processes.
+func (cs *ControlServer) AllProcesses(context.Context, *pb.Nope) (*pb.ProcessesStatus, error) {
+	statuses := &pb.ProcessesStatus{}
+	all := cs.chief.AllProcesses()
+	for _, p := range all {
+		statuses.Statuses = append(statuses.Statuses, &p)
+	}
+	return statuses, nil
+}
+
+// Halt stops chief and stop process.
+func (cs *ControlServer) Halt(context.Context, *pb.Nope) (*pb.Result, error) {
+	cs.chief.StopAll()
+	go func() {
+		time.Sleep(time.Second*2)
+		os.Exit(0)
+	}()
+	return &pb.Result{Description: "OK."}, nil
+}
+
+// GetProcess returns process status description by name.
+func (cs *ControlServer) GetProcess(ctx context.Context, pn *pb.ProcName) (*pb.ProcStatus, error) {
+	return cs.chief.GetProcess(pn.Name)
+}
+
+// DeleteService stops and removes process by name.
+func (cs *ControlServer) DeleteProcess(ctx context.Context, name *pb.ProcName) (*pb.Result, error) {
+	err := cs.chief.DeleteProcess(name.Name)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.Result{Description: "OK"}, nil
 }

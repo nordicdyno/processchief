@@ -15,42 +15,15 @@
     "application/json"
   ],
   "paths": {
-    "/add": {
+    "/halt": {
       "post": {
-        "summary": "AddService adds service.",
-        "operationId": "AddService",
+        "summary": "Halt stops supervisor.",
+        "operationId": "Halt",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbNope"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbNewService"
-            }
-          }
-        ],
-        "tags": [
-          "ServicesAPI"
-        ]
-      }
-    },
-    "/all": {
-      "post": {
-        "summary": "AllServices returns all registered services.",
-        "operationId": "AllServices",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbServices"
+              "$ref": "#/definitions/pbResult"
             }
           }
         },
@@ -65,19 +38,19 @@
           }
         ],
         "tags": [
-          "ServicesAPI"
+          "ControlAPI"
         ]
       }
     },
-    "/get": {
+    "/logger/signal": {
       "post": {
-        "summary": "GetService returns service description for provided name.",
-        "operationId": "GetService",
+        "summary": "LoggerSignal send signal to logger.",
+        "operationId": "LoggerSignal",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbService"
+              "$ref": "#/definitions/pbResult"
             }
           }
         },
@@ -87,95 +60,265 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbServiceName"
+              "$ref": "#/definitions/pbSignal"
             }
           }
         ],
         "tags": [
-          "ServicesAPI"
+          "ControlAPI"
         ]
       }
     },
-    "/update": {
+    "/proc/add": {
       "post": {
-        "summary": "UpdateService updates service.",
-        "operationId": "UpdateService",
+        "summary": "AddProcess adds process.",
+        "operationId": "AddProcess",
         "responses": {
           "200": {
             "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResult"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbSetProc"
+            }
+          }
+        ],
+        "tags": [
+          "ControlAPI"
+        ]
+      }
+    },
+    "/proc/delete": {
+      "post": {
+        "summary": "DeleteProcess deletes process.",
+        "operationId": "DeleteProcess",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResult"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbProcName"
+            }
+          }
+        ],
+        "tags": [
+          "ControlAPI"
+        ]
+      }
+    },
+    "/proc/get": {
+      "post": {
+        "summary": "GetProcess returns process status by name.",
+        "operationId": "GetProcess",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbProcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbProcName"
+            }
+          }
+        ],
+        "tags": [
+          "ControlAPI"
+        ]
+      }
+    },
+    "/proc/signal": {
+      "post": {
+        "summary": "CommandSignal send signal to process.",
+        "operationId": "ProcessSignal",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResult"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbSignal"
+            }
+          }
+        ],
+        "tags": [
+          "ControlAPI"
+        ]
+      }
+    },
+    "/proc/update": {
+      "post": {
+        "summary": "UpdateProcess updates process.",
+        "operationId": "UpdateProcess",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbResult"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbSetProc"
+            }
+          }
+        ],
+        "tags": [
+          "ControlAPI"
+        ]
+      }
+    },
+    "/procs": {
+      "post": {
+        "summary": "AllProcesses returns all registered processes.",
+        "operationId": "AllProcesses",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbProcessesStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
             "schema": {
               "$ref": "#/definitions/pbNope"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbNewService"
-            }
-          }
         ],
         "tags": [
-          "ServicesAPI"
+          "ControlAPI"
         ]
       }
     }
   },
   "definitions": {
-    "pbNewService": {
+    "pbNope": {
+      "type": "object"
+    },
+    "pbProcName": {
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
-        },
-        "commandline": {
           "type": "string"
         }
       }
     },
-    "pbNope": {
-      "type": "object"
+    "pbProcStatus": {
+      "type": "object",
+      "properties": {
+        "pid": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "process": {
+          "$ref": "#/definitions/pbProcess"
+        }
+      }
     },
-    "pbService": {
+    "pbProcess": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string"
         },
-        "commandline": {
+        "commandLine": {
           "type": "string"
         },
-        "status": {
+        "loggerCommandLine": {
           "type": "string"
         },
-        "pid": {
+        "workingDir": {
+          "type": "string"
+        }
+      }
+    },
+    "pbProcessesStatus": {
+      "type": "object",
+      "properties": {
+        "statuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbProcStatus"
+          }
+        }
+      },
+      "description": "ProcessesStatus contains processes statuses."
+    },
+    "pbResult": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "pbSetProc": {
+      "type": "object",
+      "properties": {
+        "create": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "process": {
+          "$ref": "#/definitions/pbProcess"
+        }
+      }
+    },
+    "pbSignal": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "signal": {
           "type": "integer",
           "format": "int32"
         }
       }
-    },
-    "pbServiceName": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "pbServices": {
-      "type": "object",
-      "properties": {
-        "service": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/pbService"
-          }
-        }
-      },
-      "description": "Services contains service names."
     }
   }
 }

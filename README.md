@@ -1,30 +1,30 @@
-# simple-hypervisor
+# process-chief
 
 just dead simple processes hypervisor
 
 ## how to install
 
-    go install -v github.com/nordicdyno/simple-hypervisor/cmd/...
+    go install -v github.com/nordicdyno/process-chief/cmd/...
+
+## components
 
 ## how to use
 
 start server:
 
-    sh-srv
+    pc-srv
 
 show services list:
 
-    sh-ctl list
+    pc-ctl list
 
 add service:
 
-    sh-ctl add
+    pc-ctl add -h
 
 ## todo
 
-* set ports via command line
+* set server listen ports via command line
 * http API docs
-* logs redirection
-* more sh-ctl commands
 * pretty output
-* `wait service start/stop` command
+* `wait process` command 

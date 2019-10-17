@@ -56,228 +56,384 @@ func (m *Nope) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Nope proto.InternalMessageInfo
 
-type NewService struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Commandline          string   `protobuf:"bytes,2,opt,name=commandline,proto3" json:"commandline,omitempty"`
+type Result struct {
+	Description          string   `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *NewService) Reset()         { *m = NewService{} }
-func (m *NewService) String() string { return proto.CompactTextString(m) }
-func (*NewService) ProtoMessage()    {}
-func (*NewService) Descriptor() ([]byte, []int) {
+func (m *Result) Reset()         { *m = Result{} }
+func (m *Result) String() string { return proto.CompactTextString(m) }
+func (*Result) ProtoMessage()    {}
+func (*Result) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b0bcca62df7aeb4c, []int{1}
 }
 
-func (m *NewService) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_NewService.Unmarshal(m, b)
+func (m *Result) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Result.Unmarshal(m, b)
 }
-func (m *NewService) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_NewService.Marshal(b, m, deterministic)
+func (m *Result) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Result.Marshal(b, m, deterministic)
 }
-func (m *NewService) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NewService.Merge(m, src)
+func (m *Result) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Result.Merge(m, src)
 }
-func (m *NewService) XXX_Size() int {
-	return xxx_messageInfo_NewService.Size(m)
+func (m *Result) XXX_Size() int {
+	return xxx_messageInfo_Result.Size(m)
 }
-func (m *NewService) XXX_DiscardUnknown() {
-	xxx_messageInfo_NewService.DiscardUnknown(m)
+func (m *Result) XXX_DiscardUnknown() {
+	xxx_messageInfo_Result.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_NewService proto.InternalMessageInfo
+var xxx_messageInfo_Result proto.InternalMessageInfo
 
-func (m *NewService) GetName() string {
+func (m *Result) GetDescription() string {
 	if m != nil {
-		return m.Name
+		return m.Description
 	}
 	return ""
 }
 
-func (m *NewService) GetCommandline() string {
-	if m != nil {
-		return m.Commandline
-	}
-	return ""
-}
-
-type Service struct {
+type Signal struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Commandline          string   `protobuf:"bytes,2,opt,name=commandline,proto3" json:"commandline,omitempty"`
-	Status               string   `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
-	Pid                  int32    `protobuf:"varint,4,opt,name=pid,proto3" json:"pid,omitempty"`
+	Signal               int32    `protobuf:"varint,2,opt,name=signal,proto3" json:"signal,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Service) Reset()         { *m = Service{} }
-func (m *Service) String() string { return proto.CompactTextString(m) }
-func (*Service) ProtoMessage()    {}
-func (*Service) Descriptor() ([]byte, []int) {
+func (m *Signal) Reset()         { *m = Signal{} }
+func (m *Signal) String() string { return proto.CompactTextString(m) }
+func (*Signal) ProtoMessage()    {}
+func (*Signal) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b0bcca62df7aeb4c, []int{2}
 }
 
-func (m *Service) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Service.Unmarshal(m, b)
+func (m *Signal) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Signal.Unmarshal(m, b)
 }
-func (m *Service) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Service.Marshal(b, m, deterministic)
+func (m *Signal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Signal.Marshal(b, m, deterministic)
 }
-func (m *Service) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Service.Merge(m, src)
+func (m *Signal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Signal.Merge(m, src)
 }
-func (m *Service) XXX_Size() int {
-	return xxx_messageInfo_Service.Size(m)
+func (m *Signal) XXX_Size() int {
+	return xxx_messageInfo_Signal.Size(m)
 }
-func (m *Service) XXX_DiscardUnknown() {
-	xxx_messageInfo_Service.DiscardUnknown(m)
+func (m *Signal) XXX_DiscardUnknown() {
+	xxx_messageInfo_Signal.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Service proto.InternalMessageInfo
+var xxx_messageInfo_Signal proto.InternalMessageInfo
 
-func (m *Service) GetName() string {
+func (m *Signal) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *Service) GetCommandline() string {
+func (m *Signal) GetSignal() int32 {
 	if m != nil {
-		return m.Commandline
+		return m.Signal
 	}
-	return ""
+	return 0
 }
 
-func (m *Service) GetStatus() string {
-	if m != nil {
-		return m.Status
-	}
-	return ""
+type SetProc struct {
+	Create               bool     `protobuf:"varint,1,opt,name=create,proto3" json:"create,omitempty"`
+	Process              *Process `protobuf:"bytes,2,opt,name=process,proto3" json:"process,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Service) GetPid() int32 {
+func (m *SetProc) Reset()         { *m = SetProc{} }
+func (m *SetProc) String() string { return proto.CompactTextString(m) }
+func (*SetProc) ProtoMessage()    {}
+func (*SetProc) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b0bcca62df7aeb4c, []int{3}
+}
+
+func (m *SetProc) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SetProc.Unmarshal(m, b)
+}
+func (m *SetProc) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SetProc.Marshal(b, m, deterministic)
+}
+func (m *SetProc) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SetProc.Merge(m, src)
+}
+func (m *SetProc) XXX_Size() int {
+	return xxx_messageInfo_SetProc.Size(m)
+}
+func (m *SetProc) XXX_DiscardUnknown() {
+	xxx_messageInfo_SetProc.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SetProc proto.InternalMessageInfo
+
+func (m *SetProc) GetCreate() bool {
+	if m != nil {
+		return m.Create
+	}
+	return false
+}
+
+func (m *SetProc) GetProcess() *Process {
+	if m != nil {
+		return m.Process
+	}
+	return nil
+}
+
+type ProcStatus struct {
+	Pid                  int32    `protobuf:"varint,1,opt,name=pid,proto3" json:"pid,omitempty"`
+	State                string   `protobuf:"bytes,2,opt,name=state,proto3" json:"state,omitempty"`
+	Process              *Process `protobuf:"bytes,3,opt,name=process,proto3" json:"process,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ProcStatus) Reset()         { *m = ProcStatus{} }
+func (m *ProcStatus) String() string { return proto.CompactTextString(m) }
+func (*ProcStatus) ProtoMessage()    {}
+func (*ProcStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b0bcca62df7aeb4c, []int{4}
+}
+
+func (m *ProcStatus) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ProcStatus.Unmarshal(m, b)
+}
+func (m *ProcStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ProcStatus.Marshal(b, m, deterministic)
+}
+func (m *ProcStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProcStatus.Merge(m, src)
+}
+func (m *ProcStatus) XXX_Size() int {
+	return xxx_messageInfo_ProcStatus.Size(m)
+}
+func (m *ProcStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProcStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ProcStatus proto.InternalMessageInfo
+
+func (m *ProcStatus) GetPid() int32 {
 	if m != nil {
 		return m.Pid
 	}
 	return 0
 }
 
-type ServiceName struct {
+func (m *ProcStatus) GetState() string {
+	if m != nil {
+		return m.State
+	}
+	return ""
+}
+
+func (m *ProcStatus) GetProcess() *Process {
+	if m != nil {
+		return m.Process
+	}
+	return nil
+}
+
+type Process struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	CommandLine          string   `protobuf:"bytes,2,opt,name=commandLine,proto3" json:"commandLine,omitempty"`
+	LoggerCommandLine    string   `protobuf:"bytes,3,opt,name=loggerCommandLine,proto3" json:"loggerCommandLine,omitempty"`
+	WorkingDir           string   `protobuf:"bytes,4,opt,name=workingDir,proto3" json:"workingDir,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ServiceName) Reset()         { *m = ServiceName{} }
-func (m *ServiceName) String() string { return proto.CompactTextString(m) }
-func (*ServiceName) ProtoMessage()    {}
-func (*ServiceName) Descriptor() ([]byte, []int) {
-	return fileDescriptor_b0bcca62df7aeb4c, []int{3}
+func (m *Process) Reset()         { *m = Process{} }
+func (m *Process) String() string { return proto.CompactTextString(m) }
+func (*Process) ProtoMessage()    {}
+func (*Process) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b0bcca62df7aeb4c, []int{5}
 }
 
-func (m *ServiceName) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ServiceName.Unmarshal(m, b)
+func (m *Process) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Process.Unmarshal(m, b)
 }
-func (m *ServiceName) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ServiceName.Marshal(b, m, deterministic)
+func (m *Process) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Process.Marshal(b, m, deterministic)
 }
-func (m *ServiceName) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ServiceName.Merge(m, src)
+func (m *Process) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Process.Merge(m, src)
 }
-func (m *ServiceName) XXX_Size() int {
-	return xxx_messageInfo_ServiceName.Size(m)
+func (m *Process) XXX_Size() int {
+	return xxx_messageInfo_Process.Size(m)
 }
-func (m *ServiceName) XXX_DiscardUnknown() {
-	xxx_messageInfo_ServiceName.DiscardUnknown(m)
+func (m *Process) XXX_DiscardUnknown() {
+	xxx_messageInfo_Process.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ServiceName proto.InternalMessageInfo
+var xxx_messageInfo_Process proto.InternalMessageInfo
 
-func (m *ServiceName) GetName() string {
+func (m *Process) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-// Services contains service names.
-type Services struct {
-	Service              []*Service `protobuf:"bytes,1,rep,name=service,proto3" json:"service,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
-	XXX_unrecognized     []byte     `json:"-"`
-	XXX_sizecache        int32      `json:"-"`
-}
-
-func (m *Services) Reset()         { *m = Services{} }
-func (m *Services) String() string { return proto.CompactTextString(m) }
-func (*Services) ProtoMessage()    {}
-func (*Services) Descriptor() ([]byte, []int) {
-	return fileDescriptor_b0bcca62df7aeb4c, []int{4}
-}
-
-func (m *Services) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Services.Unmarshal(m, b)
-}
-func (m *Services) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Services.Marshal(b, m, deterministic)
-}
-func (m *Services) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Services.Merge(m, src)
-}
-func (m *Services) XXX_Size() int {
-	return xxx_messageInfo_Services.Size(m)
-}
-func (m *Services) XXX_DiscardUnknown() {
-	xxx_messageInfo_Services.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Services proto.InternalMessageInfo
-
-func (m *Services) GetService() []*Service {
+func (m *Process) GetCommandLine() string {
 	if m != nil {
-		return m.Service
+		return m.CommandLine
+	}
+	return ""
+}
+
+func (m *Process) GetLoggerCommandLine() string {
+	if m != nil {
+		return m.LoggerCommandLine
+	}
+	return ""
+}
+
+func (m *Process) GetWorkingDir() string {
+	if m != nil {
+		return m.WorkingDir
+	}
+	return ""
+}
+
+type ProcName struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ProcName) Reset()         { *m = ProcName{} }
+func (m *ProcName) String() string { return proto.CompactTextString(m) }
+func (*ProcName) ProtoMessage()    {}
+func (*ProcName) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b0bcca62df7aeb4c, []int{6}
+}
+
+func (m *ProcName) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ProcName.Unmarshal(m, b)
+}
+func (m *ProcName) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ProcName.Marshal(b, m, deterministic)
+}
+func (m *ProcName) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProcName.Merge(m, src)
+}
+func (m *ProcName) XXX_Size() int {
+	return xxx_messageInfo_ProcName.Size(m)
+}
+func (m *ProcName) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProcName.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ProcName proto.InternalMessageInfo
+
+func (m *ProcName) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+// ProcessesStatus contains processes statuses.
+type ProcessesStatus struct {
+	Statuses             []*ProcStatus `protobuf:"bytes,1,rep,name=statuses,proto3" json:"statuses,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
+	XXX_unrecognized     []byte        `json:"-"`
+	XXX_sizecache        int32         `json:"-"`
+}
+
+func (m *ProcessesStatus) Reset()         { *m = ProcessesStatus{} }
+func (m *ProcessesStatus) String() string { return proto.CompactTextString(m) }
+func (*ProcessesStatus) ProtoMessage()    {}
+func (*ProcessesStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_b0bcca62df7aeb4c, []int{7}
+}
+
+func (m *ProcessesStatus) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ProcessesStatus.Unmarshal(m, b)
+}
+func (m *ProcessesStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ProcessesStatus.Marshal(b, m, deterministic)
+}
+func (m *ProcessesStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ProcessesStatus.Merge(m, src)
+}
+func (m *ProcessesStatus) XXX_Size() int {
+	return xxx_messageInfo_ProcessesStatus.Size(m)
+}
+func (m *ProcessesStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_ProcessesStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ProcessesStatus proto.InternalMessageInfo
+
+func (m *ProcessesStatus) GetStatuses() []*ProcStatus {
+	if m != nil {
+		return m.Statuses
 	}
 	return nil
 }
 
 func init() {
 	proto.RegisterType((*Nope)(nil), "pb.Nope")
-	proto.RegisterType((*NewService)(nil), "pb.NewService")
-	proto.RegisterType((*Service)(nil), "pb.Service")
-	proto.RegisterType((*ServiceName)(nil), "pb.ServiceName")
-	proto.RegisterType((*Services)(nil), "pb.Services")
+	proto.RegisterType((*Result)(nil), "pb.Result")
+	proto.RegisterType((*Signal)(nil), "pb.Signal")
+	proto.RegisterType((*SetProc)(nil), "pb.SetProc")
+	proto.RegisterType((*ProcStatus)(nil), "pb.ProcStatus")
+	proto.RegisterType((*Process)(nil), "pb.Process")
+	proto.RegisterType((*ProcName)(nil), "pb.ProcName")
+	proto.RegisterType((*ProcessesStatus)(nil), "pb.ProcessesStatus")
 }
 
 func init() { proto.RegisterFile("pb/api.proto", fileDescriptor_b0bcca62df7aeb4c) }
 
 var fileDescriptor_b0bcca62df7aeb4c = []byte{
-	// 322 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x92, 0x4f, 0x4a, 0x03, 0x31,
-	0x14, 0xc6, 0x49, 0x3b, 0xf6, 0xcf, 0x9b, 0x6a, 0x25, 0x0b, 0x19, 0x06, 0x17, 0x63, 0x40, 0x28,
-	0x5d, 0x74, 0xb0, 0x82, 0x42, 0xc5, 0x45, 0xdd, 0x88, 0x9b, 0x22, 0x15, 0x0f, 0x90, 0x69, 0x42,
-	0x09, 0xa4, 0x49, 0x68, 0x52, 0xdd, 0x7b, 0x05, 0x8f, 0xe6, 0x15, 0x3c, 0x85, 0x2b, 0x49, 0x3a,
-	0xad, 0x59, 0x08, 0x2e, 0xdc, 0xbd, 0xe4, 0xfb, 0x7e, 0xef, 0xcb, 0x7b, 0x04, 0x7a, 0xa6, 0x2a,
-	0xa9, 0x11, 0x23, 0xb3, 0xd6, 0x4e, 0xe3, 0x86, 0xa9, 0xf2, 0xd3, 0xa5, 0xd6, 0x4b, 0xc9, 0xfd,
-	0x6d, 0x49, 0x95, 0xd2, 0x8e, 0x3a, 0xa1, 0x95, 0xdd, 0x3a, 0x48, 0x0b, 0x92, 0x99, 0x36, 0x9c,
-	0xdc, 0x01, 0xcc, 0xf8, 0xeb, 0x13, 0x5f, 0xbf, 0x88, 0x05, 0xc7, 0x18, 0x12, 0x45, 0x57, 0x3c,
-	0x43, 0x05, 0x1a, 0x74, 0xe7, 0xa1, 0xc6, 0x05, 0xa4, 0x0b, 0xbd, 0x5a, 0x51, 0xc5, 0xa4, 0x50,
-	0x3c, 0x6b, 0x04, 0x29, 0xbe, 0x22, 0x02, 0xda, 0xff, 0x6a, 0x80, 0x4f, 0xa0, 0x65, 0x1d, 0x75,
-	0x1b, 0x9b, 0x35, 0x83, 0x58, 0x9f, 0xf0, 0x31, 0x34, 0x8d, 0x60, 0x59, 0x52, 0xa0, 0xc1, 0xc1,
-	0xdc, 0x97, 0xe4, 0x0c, 0xd2, 0x3a, 0x6a, 0xe6, 0x5b, 0xff, 0x12, 0x47, 0x2e, 0xa0, 0x53, 0x5b,
-	0x2c, 0x3e, 0x87, 0xb6, 0xdd, 0xd6, 0x19, 0x2a, 0x9a, 0x83, 0x74, 0x9c, 0x8e, 0x4c, 0x35, 0xaa,
-	0xe5, 0xf9, 0x4e, 0x1b, 0x7f, 0xa1, 0x7d, 0x5b, 0x3b, 0x7d, 0x7c, 0xc0, 0xd7, 0x00, 0x53, 0xc6,
-	0x76, 0x33, 0x1d, 0x79, 0xe6, 0x67, 0x49, 0x79, 0x27, 0x9c, 0xfd, 0xf2, 0xfa, 0x6f, 0x1f, 0x9f,
-	0xef, 0x8d, 0x2e, 0x49, 0x4a, 0xca, 0xd8, 0x04, 0x0d, 0xf1, 0x2d, 0x1c, 0x3e, 0x1b, 0x46, 0x1d,
-	0xff, 0x9b, 0xc5, 0x81, 0xed, 0x91, 0x76, 0xb9, 0x09, 0x84, 0xc7, 0xaf, 0x20, 0x9d, 0x4a, 0xb9,
-	0x7f, 0xfd, 0xde, 0x9c, 0xf7, 0xa2, 0x67, 0xdb, 0x38, 0x56, 0x4a, 0xcf, 0xdd, 0x00, 0xdc, 0x73,
-	0xb7, 0xcb, 0xec, 0x47, 0x66, 0xbf, 0xa5, 0x3c, 0x1e, 0x3a, 0x82, 0x97, 0xdc, 0x4d, 0xd0, 0xb0,
-	0x6a, 0x85, 0x0f, 0x71, 0xf9, 0x1d, 0x00, 0x00, 0xff, 0xff, 0x33, 0x78, 0x4d, 0x1e, 0x42, 0x02,
-	0x00, 0x00,
+	// 523 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x54, 0xc1, 0x6a, 0xdb, 0x40,
+	0x10, 0x45, 0xb6, 0x2c, 0x3b, 0x23, 0xd9, 0x8d, 0x37, 0xa1, 0x75, 0x4d, 0x09, 0x62, 0xa1, 0x60,
+	0x4c, 0xb1, 0xc0, 0xed, 0xa9, 0xa5, 0x50, 0x35, 0x81, 0xa6, 0x10, 0x82, 0x91, 0xe9, 0xa9, 0xa7,
+	0xb5, 0xb4, 0xa8, 0xa2, 0x6b, 0xed, 0xa2, 0x5d, 0xd3, 0x7b, 0x6f, 0x3d, 0xf4, 0xd4, 0x4f, 0xeb,
+	0x2f, 0xf4, 0x43, 0xca, 0xee, 0x4a, 0x89, 0xe2, 0x84, 0xf8, 0x36, 0x9a, 0x7d, 0xef, 0xcd, 0xbc,
+	0x99, 0x41, 0x10, 0x88, 0x4d, 0x44, 0x44, 0xb1, 0x10, 0x15, 0x57, 0x1c, 0x75, 0xc4, 0x66, 0xfa,
+	0x22, 0xe7, 0x3c, 0x67, 0x54, 0x67, 0x23, 0x52, 0x96, 0x5c, 0x11, 0x55, 0xf0, 0x52, 0x5a, 0x04,
+	0xf6, 0xc0, 0xbd, 0xe6, 0x82, 0xe2, 0x39, 0x78, 0x09, 0x95, 0x3b, 0xa6, 0x50, 0x08, 0x7e, 0x46,
+	0x65, 0x5a, 0x15, 0x42, 0xe3, 0x26, 0x4e, 0xe8, 0xcc, 0x8e, 0x92, 0x76, 0x0a, 0xbf, 0x01, 0x6f,
+	0x5d, 0xe4, 0x25, 0x61, 0x08, 0x81, 0x5b, 0x92, 0x2d, 0xad, 0x41, 0x26, 0x46, 0x4f, 0xc1, 0x93,
+	0xe6, 0x75, 0xd2, 0x09, 0x9d, 0x59, 0x2f, 0xa9, 0xbf, 0xf0, 0x25, 0xf4, 0xd7, 0x54, 0xad, 0x2a,
+	0x9e, 0x6a, 0x48, 0x5a, 0x51, 0xa2, 0x2c, 0x71, 0x90, 0xd4, 0x5f, 0xe8, 0x25, 0xf4, 0x45, 0xc5,
+	0x53, 0x2a, 0xa5, 0xe1, 0xfa, 0x4b, 0x7f, 0x21, 0x36, 0x8b, 0x95, 0x4d, 0x25, 0xcd, 0x1b, 0xfe,
+	0x0a, 0xa0, 0x73, 0x6b, 0x45, 0xd4, 0x4e, 0xa2, 0x63, 0xe8, 0x8a, 0x22, 0x33, 0x4a, 0xbd, 0x44,
+	0x87, 0xe8, 0x14, 0x7a, 0x52, 0x69, 0xf5, 0x8e, 0x69, 0xcb, 0x7e, 0xb4, 0xc5, 0xbb, 0x8f, 0x88,
+	0xff, 0x76, 0xa0, 0x5f, 0x27, 0x1f, 0xb4, 0x17, 0x82, 0x9f, 0xf2, 0xed, 0x96, 0x94, 0xd9, 0x55,
+	0x51, 0x36, 0x25, 0xda, 0x29, 0xf4, 0x0a, 0xc6, 0x8c, 0xe7, 0x39, 0xad, 0xce, 0x5b, 0xb8, 0xae,
+	0xc1, 0xdd, 0x7f, 0x40, 0x67, 0x00, 0x3f, 0x78, 0xf5, 0xbd, 0x28, 0xf3, 0x8b, 0xa2, 0x9a, 0xb8,
+	0x06, 0xd6, 0xca, 0xe0, 0x33, 0x18, 0xe8, 0x76, 0xae, 0x75, 0xed, 0x07, 0xfa, 0xc1, 0xef, 0xe1,
+	0x49, 0xdd, 0x2e, 0x95, 0xf5, 0x44, 0xe6, 0x30, 0x90, 0x26, 0xa2, 0x72, 0xe2, 0x84, 0xdd, 0x99,
+	0xbf, 0x1c, 0x35, 0x56, 0x2d, 0x22, 0xb9, 0x79, 0x5f, 0xfe, 0x72, 0x01, 0xce, 0x79, 0xa9, 0x2a,
+	0xce, 0xe2, 0xd5, 0x67, 0x14, 0x43, 0x70, 0x65, 0x5a, 0xac, 0x17, 0x0c, 0x9a, 0x68, 0xe3, 0xa9,
+	0x89, 0xed, 0x91, 0xe0, 0xe7, 0x3f, 0xff, 0xfe, 0xfb, 0xd3, 0x39, 0xc1, 0xa3, 0xc8, 0x3a, 0x8a,
+	0xec, 0x92, 0xdf, 0x3a, 0x73, 0xf4, 0x01, 0x86, 0x75, 0x43, 0x07, 0x34, 0x9e, 0x19, 0x8d, 0x31,
+	0x0e, 0x22, 0x3d, 0xfb, 0x3b, 0x0a, 0x41, 0xcc, 0xd8, 0x8d, 0x2b, 0x34, 0xd0, 0x24, 0x7d, 0xa5,
+	0xd3, 0x93, 0xd6, 0xca, 0x1a, 0xbb, 0x78, 0x6c, 0x74, 0x7c, 0xec, 0x19, 0x1d, 0xa9, 0x15, 0x16,
+	0xe0, 0x5e, 0x12, 0xa6, 0x5a, 0xcc, 0x76, 0xe1, 0x63, 0x43, 0x00, 0xdc, 0x8b, 0xbe, 0x11, 0xa6,
+	0x34, 0xfe, 0x1d, 0x40, 0x9c, 0x65, 0xcd, 0xda, 0xcd, 0x61, 0xd4, 0xb7, 0x7a, 0x87, 0x78, 0x6a,
+	0x88, 0x23, 0x7c, 0x64, 0x3b, 0x26, 0x59, 0xa6, 0xc9, 0x31, 0x0c, 0xbf, 0x88, 0x8c, 0x28, 0x7a,
+	0x90, 0xbf, 0xe7, 0x78, 0x67, 0x58, 0x5a, 0xe2, 0x23, 0x0c, 0x2f, 0x28, 0xa3, 0xb7, 0x12, 0x41,
+	0x63, 0x54, 0xef, 0xfd, 0x31, 0x8d, 0xcc, 0xd0, 0xec, 0xd4, 0xe0, 0x93, 0xad, 0x79, 0x5f, 0x60,
+	0x6f, 0xff, 0xfb, 0x46, 0x72, 0xaa, 0xa7, 0xb0, 0xf1, 0xcc, 0x2f, 0xe1, 0xf5, 0xff, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0xbb, 0x60, 0xda, 0x84, 0x44, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -288,188 +444,340 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// ServicesAPIClient is the client API for ServicesAPI service.
+// ControlAPIClient is the client API for ControlAPI service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type ServicesAPIClient interface {
-	// AddService adds service.
-	AddService(ctx context.Context, in *NewService, opts ...grpc.CallOption) (*Nope, error)
-	// UpdateService updates service.
-	UpdateService(ctx context.Context, in *NewService, opts ...grpc.CallOption) (*Nope, error)
-	// AllServices returns all registered services.
-	AllServices(ctx context.Context, in *Nope, opts ...grpc.CallOption) (*Services, error)
-	// GetService returns service description for provided name.
-	GetService(ctx context.Context, in *ServiceName, opts ...grpc.CallOption) (*Service, error)
+type ControlAPIClient interface {
+	// LoggerSignal send signal to logger.
+	LoggerSignal(ctx context.Context, in *Signal, opts ...grpc.CallOption) (*Result, error)
+	// CommandSignal send signal to process.
+	ProcessSignal(ctx context.Context, in *Signal, opts ...grpc.CallOption) (*Result, error)
+	// AllProcesses returns all registered processes.
+	AllProcesses(ctx context.Context, in *Nope, opts ...grpc.CallOption) (*ProcessesStatus, error)
+	// Halt stops supervisor.
+	Halt(ctx context.Context, in *Nope, opts ...grpc.CallOption) (*Result, error)
+	// AddProcess adds process.
+	AddProcess(ctx context.Context, in *SetProc, opts ...grpc.CallOption) (*Result, error)
+	// UpdateProcess updates process.
+	UpdateProcess(ctx context.Context, in *SetProc, opts ...grpc.CallOption) (*Result, error)
+	// DeleteProcess deletes process.
+	DeleteProcess(ctx context.Context, in *ProcName, opts ...grpc.CallOption) (*Result, error)
+	// GetProcess returns process status by name.
+	GetProcess(ctx context.Context, in *ProcName, opts ...grpc.CallOption) (*ProcStatus, error)
 }
 
-type servicesAPIClient struct {
+type controlAPIClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewServicesAPIClient(cc *grpc.ClientConn) ServicesAPIClient {
-	return &servicesAPIClient{cc}
+func NewControlAPIClient(cc *grpc.ClientConn) ControlAPIClient {
+	return &controlAPIClient{cc}
 }
 
-func (c *servicesAPIClient) AddService(ctx context.Context, in *NewService, opts ...grpc.CallOption) (*Nope, error) {
-	out := new(Nope)
-	err := c.cc.Invoke(ctx, "/pb.ServicesAPI/AddService", in, out, opts...)
+func (c *controlAPIClient) LoggerSignal(ctx context.Context, in *Signal, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/pb.ControlAPI/LoggerSignal", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *servicesAPIClient) UpdateService(ctx context.Context, in *NewService, opts ...grpc.CallOption) (*Nope, error) {
-	out := new(Nope)
-	err := c.cc.Invoke(ctx, "/pb.ServicesAPI/UpdateService", in, out, opts...)
+func (c *controlAPIClient) ProcessSignal(ctx context.Context, in *Signal, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/pb.ControlAPI/ProcessSignal", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *servicesAPIClient) AllServices(ctx context.Context, in *Nope, opts ...grpc.CallOption) (*Services, error) {
-	out := new(Services)
-	err := c.cc.Invoke(ctx, "/pb.ServicesAPI/AllServices", in, out, opts...)
+func (c *controlAPIClient) AllProcesses(ctx context.Context, in *Nope, opts ...grpc.CallOption) (*ProcessesStatus, error) {
+	out := new(ProcessesStatus)
+	err := c.cc.Invoke(ctx, "/pb.ControlAPI/AllProcesses", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *servicesAPIClient) GetService(ctx context.Context, in *ServiceName, opts ...grpc.CallOption) (*Service, error) {
-	out := new(Service)
-	err := c.cc.Invoke(ctx, "/pb.ServicesAPI/GetService", in, out, opts...)
+func (c *controlAPIClient) Halt(ctx context.Context, in *Nope, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/pb.ControlAPI/Halt", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ServicesAPIServer is the server API for ServicesAPI service.
-type ServicesAPIServer interface {
-	// AddService adds service.
-	AddService(context.Context, *NewService) (*Nope, error)
-	// UpdateService updates service.
-	UpdateService(context.Context, *NewService) (*Nope, error)
-	// AllServices returns all registered services.
-	AllServices(context.Context, *Nope) (*Services, error)
-	// GetService returns service description for provided name.
-	GetService(context.Context, *ServiceName) (*Service, error)
+func (c *controlAPIClient) AddProcess(ctx context.Context, in *SetProc, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/pb.ControlAPI/AddProcess", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-// UnimplementedServicesAPIServer can be embedded to have forward compatible implementations.
-type UnimplementedServicesAPIServer struct {
+func (c *controlAPIClient) UpdateProcess(ctx context.Context, in *SetProc, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/pb.ControlAPI/UpdateProcess", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-func (*UnimplementedServicesAPIServer) AddService(ctx context.Context, req *NewService) (*Nope, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddService not implemented")
-}
-func (*UnimplementedServicesAPIServer) UpdateService(ctx context.Context, req *NewService) (*Nope, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateService not implemented")
-}
-func (*UnimplementedServicesAPIServer) AllServices(ctx context.Context, req *Nope) (*Services, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AllServices not implemented")
-}
-func (*UnimplementedServicesAPIServer) GetService(ctx context.Context, req *ServiceName) (*Service, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetService not implemented")
+func (c *controlAPIClient) DeleteProcess(ctx context.Context, in *ProcName, opts ...grpc.CallOption) (*Result, error) {
+	out := new(Result)
+	err := c.cc.Invoke(ctx, "/pb.ControlAPI/DeleteProcess", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-func RegisterServicesAPIServer(s *grpc.Server, srv ServicesAPIServer) {
-	s.RegisterService(&_ServicesAPI_serviceDesc, srv)
+func (c *controlAPIClient) GetProcess(ctx context.Context, in *ProcName, opts ...grpc.CallOption) (*ProcStatus, error) {
+	out := new(ProcStatus)
+	err := c.cc.Invoke(ctx, "/pb.ControlAPI/GetProcess", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-func _ServicesAPI_AddService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NewService)
+// ControlAPIServer is the server API for ControlAPI service.
+type ControlAPIServer interface {
+	// LoggerSignal send signal to logger.
+	LoggerSignal(context.Context, *Signal) (*Result, error)
+	// CommandSignal send signal to process.
+	ProcessSignal(context.Context, *Signal) (*Result, error)
+	// AllProcesses returns all registered processes.
+	AllProcesses(context.Context, *Nope) (*ProcessesStatus, error)
+	// Halt stops supervisor.
+	Halt(context.Context, *Nope) (*Result, error)
+	// AddProcess adds process.
+	AddProcess(context.Context, *SetProc) (*Result, error)
+	// UpdateProcess updates process.
+	UpdateProcess(context.Context, *SetProc) (*Result, error)
+	// DeleteProcess deletes process.
+	DeleteProcess(context.Context, *ProcName) (*Result, error)
+	// GetProcess returns process status by name.
+	GetProcess(context.Context, *ProcName) (*ProcStatus, error)
+}
+
+// UnimplementedControlAPIServer can be embedded to have forward compatible implementations.
+type UnimplementedControlAPIServer struct {
+}
+
+func (*UnimplementedControlAPIServer) LoggerSignal(ctx context.Context, req *Signal) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoggerSignal not implemented")
+}
+func (*UnimplementedControlAPIServer) ProcessSignal(ctx context.Context, req *Signal) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProcessSignal not implemented")
+}
+func (*UnimplementedControlAPIServer) AllProcesses(ctx context.Context, req *Nope) (*ProcessesStatus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllProcesses not implemented")
+}
+func (*UnimplementedControlAPIServer) Halt(ctx context.Context, req *Nope) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Halt not implemented")
+}
+func (*UnimplementedControlAPIServer) AddProcess(ctx context.Context, req *SetProc) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddProcess not implemented")
+}
+func (*UnimplementedControlAPIServer) UpdateProcess(ctx context.Context, req *SetProc) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProcess not implemented")
+}
+func (*UnimplementedControlAPIServer) DeleteProcess(ctx context.Context, req *ProcName) (*Result, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProcess not implemented")
+}
+func (*UnimplementedControlAPIServer) GetProcess(ctx context.Context, req *ProcName) (*ProcStatus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProcess not implemented")
+}
+
+func RegisterControlAPIServer(s *grpc.Server, srv ControlAPIServer) {
+	s.RegisterService(&_ControlAPI_serviceDesc, srv)
+}
+
+func _ControlAPI_LoggerSignal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Signal)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ServicesAPIServer).AddService(ctx, in)
+		return srv.(ControlAPIServer).LoggerSignal(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.ServicesAPI/AddService",
+		FullMethod: "/pb.ControlAPI/LoggerSignal",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServicesAPIServer).AddService(ctx, req.(*NewService))
+		return srv.(ControlAPIServer).LoggerSignal(ctx, req.(*Signal))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ServicesAPI_UpdateService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NewService)
+func _ControlAPI_ProcessSignal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Signal)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ServicesAPIServer).UpdateService(ctx, in)
+		return srv.(ControlAPIServer).ProcessSignal(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.ServicesAPI/UpdateService",
+		FullMethod: "/pb.ControlAPI/ProcessSignal",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServicesAPIServer).UpdateService(ctx, req.(*NewService))
+		return srv.(ControlAPIServer).ProcessSignal(ctx, req.(*Signal))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ServicesAPI_AllServices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ControlAPI_AllProcesses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Nope)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ServicesAPIServer).AllServices(ctx, in)
+		return srv.(ControlAPIServer).AllProcesses(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.ServicesAPI/AllServices",
+		FullMethod: "/pb.ControlAPI/AllProcesses",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServicesAPIServer).AllServices(ctx, req.(*Nope))
+		return srv.(ControlAPIServer).AllProcesses(ctx, req.(*Nope))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ServicesAPI_GetService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ServiceName)
+func _ControlAPI_Halt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Nope)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ServicesAPIServer).GetService(ctx, in)
+		return srv.(ControlAPIServer).Halt(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.ServicesAPI/GetService",
+		FullMethod: "/pb.ControlAPI/Halt",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServicesAPIServer).GetService(ctx, req.(*ServiceName))
+		return srv.(ControlAPIServer).Halt(ctx, req.(*Nope))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _ServicesAPI_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.ServicesAPI",
-	HandlerType: (*ServicesAPIServer)(nil),
+func _ControlAPI_AddProcess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetProc)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlAPIServer).AddProcess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.ControlAPI/AddProcess",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlAPIServer).AddProcess(ctx, req.(*SetProc))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ControlAPI_UpdateProcess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetProc)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlAPIServer).UpdateProcess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.ControlAPI/UpdateProcess",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlAPIServer).UpdateProcess(ctx, req.(*SetProc))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ControlAPI_DeleteProcess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProcName)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlAPIServer).DeleteProcess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.ControlAPI/DeleteProcess",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlAPIServer).DeleteProcess(ctx, req.(*ProcName))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ControlAPI_GetProcess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProcName)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ControlAPIServer).GetProcess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.ControlAPI/GetProcess",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ControlAPIServer).GetProcess(ctx, req.(*ProcName))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _ControlAPI_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.ControlAPI",
+	HandlerType: (*ControlAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "AddService",
-			Handler:    _ServicesAPI_AddService_Handler,
+			MethodName: "LoggerSignal",
+			Handler:    _ControlAPI_LoggerSignal_Handler,
 		},
 		{
-			MethodName: "UpdateService",
-			Handler:    _ServicesAPI_UpdateService_Handler,
+			MethodName: "ProcessSignal",
+			Handler:    _ControlAPI_ProcessSignal_Handler,
 		},
 		{
-			MethodName: "AllServices",
-			Handler:    _ServicesAPI_AllServices_Handler,
+			MethodName: "AllProcesses",
+			Handler:    _ControlAPI_AllProcesses_Handler,
 		},
 		{
-			MethodName: "GetService",
-			Handler:    _ServicesAPI_GetService_Handler,
+			MethodName: "Halt",
+			Handler:    _ControlAPI_Halt_Handler,
+		},
+		{
+			MethodName: "AddProcess",
+			Handler:    _ControlAPI_AddProcess_Handler,
+		},
+		{
+			MethodName: "UpdateProcess",
+			Handler:    _ControlAPI_UpdateProcess_Handler,
+		},
+		{
+			MethodName: "DeleteProcess",
+			Handler:    _ControlAPI_DeleteProcess_Handler,
+		},
+		{
+			MethodName: "GetProcess",
+			Handler:    _ControlAPI_GetProcess_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

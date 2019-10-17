@@ -1,4 +1,4 @@
-package supervisor
+package processchief
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/nordicdyno/simple-hypervisor/pb"
+	"github.com/nordicdyno/processchief/pb"
 )
 
 func grpcHandlerFunc(grpcServer *grpc.Server, otherHandler http.Handler) http.Handler {
@@ -32,8 +32,8 @@ func grpcHandlerFunc(grpcServer *grpc.Server, otherHandler http.Handler) http.Ha
 	}), &http2.Server{})
 }
 
-func (s *ControlServer) init(ctx context.Context) {
-	if s.server != nil {
+func (cs *ControlServer) init(ctx context.Context) {
+	if cs.server != nil {
 		return
 	}
 
@@ -41,10 +41,10 @@ func (s *ControlServer) init(ctx context.Context) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("common addr: %s\n", l.Addr())
+	fmt.Printf("common addr: %cs\n", l.Addr())
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterServicesAPIServer(grpcServer, s)
+	pb.RegisterControlAPIServer(grpcServer, cs)
 	reflection.Register(grpcServer)
 
 	mux := http.NewServeMux()
@@ -53,9 +53,9 @@ func (s *ControlServer) init(ctx context.Context) {
 	mux.Handle("/", gwmux)
 
 	dopts := []grpc.DialOption{grpc.WithInsecure()}
-	err = pb.RegisterServicesAPIHandlerFromEndpoint(ctx, gwmux, l.Addr().String(), dopts)
+	err = pb.RegisterControlAPIHandlerFromEndpoint(ctx, gwmux, l.Addr().String(), dopts)
 
-	s.server = &serverWithContext{
+	cs.server = &serverWithContext{
 		ctx:      ctx,
 		listener: l,
 		http: &http.Server{
@@ -64,29 +64,29 @@ func (s *ControlServer) init(ctx context.Context) {
 	}
 }
 
-func (s *ControlServer) Start(ctx context.Context) error {
-	s.init(ctx)
-	s.Stop(ctx)
+func (cs *ControlServer) Start(ctx context.Context) error {
+	cs.init(ctx)
+	cs.Stop(ctx)
 
-	s.fin = make(chan struct{})
+	cs.fin = make(chan struct{})
 
-	return s.server.http.Serve(s.server.listener)
+	return cs.server.http.Serve(cs.server.listener)
 }
 
-func (s *ControlServer) stop(ctx context.Context) {
+func (cs *ControlServer) stop(ctx context.Context) {
 	// <-ctx.Done()
 	log.Println("shutting down http...")
-	err := s.server.http.Shutdown(ctx)
+	err := cs.server.http.Shutdown(ctx)
 	if err != nil {
 		log.Printf("Shutdown error: %v", err)
 	}
-	close(s.fin)
+	close(cs.fin)
 }
 
-func (s *ControlServer) Stop(ctx context.Context) {
-	if s.fin == nil {
+func (cs *ControlServer) Stop(ctx context.Context) {
+	if cs.fin == nil {
 		return
 	}
-	s.stop(ctx)
-	<-s.fin
+	cs.stop(ctx)
+	<-cs.fin
 }

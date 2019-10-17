@@ -1,4 +1,4 @@
-module github.com/nordicdyno/simple-hypervisor
+module github.com/nordicdyno/processchief
 
 go 1.13
 
