@@ -77,7 +77,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbResult"
+              "$ref": "#/definitions/pbProcStatus"
             }
           }
         },
@@ -185,7 +185,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbResult"
+              "$ref": "#/definitions/pbProcStatus"
             }
           }
         },
@@ -256,6 +256,10 @@
         },
         "process": {
           "$ref": "#/definitions/pbProcess"
+        },
+        "exited": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },

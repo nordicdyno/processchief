@@ -10,6 +10,7 @@ import (
 	"strings"
 	"sync"
 	"syscall"
+	"time"
 )
 
 // Chief is the chief of all managed processes.
@@ -78,7 +79,6 @@ func (c *Chief) LoggerSignal(name string, signal int32) error {
 	return p.logCmd.Process.Signal(syscall.Signal(signal))
 }
 
-
 func (c *Chief) ProcessSignal(name string, signal int32) error {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
@@ -93,20 +93,19 @@ func (c *Chief) ProcessSignal(name string, signal int32) error {
 	return svc.cmd.Process.Signal(syscall.Signal(signal))
 }
 
-
-func (c *Chief) UpdateProcess(name string, svc Process) error {
+func (c *Chief) UpdateProcess(name string, svc Process) (*ProcStatus, error) {
 	err := c.StopProcess(name)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	// possible logical race, but it'c not a problem, it just returns error
 	c.mu.Lock()
-	err = c.setProcess(name, svc)
+	status, err := c.setProcess(name, svc)
 	c.mu.Unlock()
-	return err
+	return status, err
 }
 
-func (c *Chief) setProcess(name string, p Process) error {
+func (c *Chief) setProcess(name string, p Process) (*ProcStatus, error) {
 	var err error
 	// XXX: it'c oversimplification, because args could be with spaces like 'a b c'
 	cmdArgs := strings.Split(p.CommandLine, " ")
@@ -118,7 +117,7 @@ func (c *Chief) setProcess(name string, p Process) error {
 	if strings.IndexByte(cmdArg0, filepath.Separator) != -1 {
 		cmdArg0, err = exec.LookPath(cmdArg0)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
@@ -139,7 +138,7 @@ func (c *Chief) setProcess(name string, p Process) error {
 		if strings.IndexByte(logArg0, filepath.Separator) != -1 {
 			logArg0, err = exec.LookPath(logArg0)
 			if err != nil {
-				return err
+				return nil, err
 			}
 		}
 		logCmd = exec.Command(logArg0, logArgs[1:]...)
@@ -163,14 +162,15 @@ func (c *Chief) setProcess(name string, p Process) error {
 
 	err = cmd.Start()
 	if err != nil {
-		return err
+		return nil, err
 	}
+
 	log.Printf(">>> Start service %v: %v args %v", name, cmdArg0, cmdArgs[1:])
 
 	if logCmd != nil {
 		err = logCmd.Start()
 		if err != nil {
-			return err
+			return nil, err
 		}
 		log.Printf(">>> Start logger for '%v': %v args: %v", name, logArg0, logArgs[1:])
 	}
@@ -178,9 +178,9 @@ func (c *Chief) setProcess(name string, p Process) error {
 	procHolder := &procHolder{
 		status: ProcStatus{Process: &p},
 
-		cmd: cmd,
+		cmd:    cmd,
 		logCmd: logCmd,
-		fin: make(chan struct{}),
+		fin:    make(chan struct{}),
 	}
 	c.procs[name] = procHolder
 
@@ -193,15 +193,54 @@ func (c *Chief) setProcess(name string, p Process) error {
 		procHolder.setState(status)
 		close(procHolder.fin)
 	}()
-	return nil
+
+	startWaitDuration := time.Second * 5
+	startT := time.Now()
+	endWaitT := startT.Add(startWaitDuration)
+
+	var status *ProcStatus
+	startErr := fmt.Errorf("failed to wait process start during %v", startWaitDuration)
+	for time.Now().Before(endWaitT) {
+		time.Sleep(time.Millisecond * 100)
+		proc := cmd.Process
+		if proc == nil {
+			// fmt.Println("process is nil")
+			continue
+		}
+
+		startErr = nil
+		status = &ProcStatus{
+			Pid:     int32(proc.Pid),
+			Process: &p,
+			State:   "started",
+		}
+
+		pc := cmd.ProcessState
+		if pc != nil {
+			// fmt.Println("Pid:", pc.Pid())
+			// fmt.Println("Success:", pc.Success())
+			// fmt.Println("ExitCode:", pc.ExitCode())
+			status.State = "exited"
+			if pc.ExitCode() == 0 {
+				startErr = nil
+			} else {
+				startErr = fmt.Errorf("process exited with code %v", pc.ExitCode())
+			}
+			status.Exited = true
+		}
+		break
+	}
+	fmt.Println("start loop ended")
+
+	return status, startErr
 }
 
-func (c *Chief) AddProcess(name string, p Process) error {
+func (c *Chief) AddProcess(name string, p Process) (*ProcStatus, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
 	if _, ok := c.procs[p.Name]; ok {
-		return fmt.Errorf("'%v' already registered", name)
+		return nil, fmt.Errorf("'%v' already registered", name)
 	}
 
 	return c.setProcess(name, p)

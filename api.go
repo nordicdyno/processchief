@@ -49,22 +49,14 @@ func (cs *ControlServer) LoggerSignal(ctx context.Context, svcSig *pb.Signal) (*
 	return &pb.Result{Description: "OK"}, nil
 }
 
-func (cs *ControlServer) AddProcess(ctx context.Context, pSet *pb.SetProc) (*pb.Result, error) {
+func (cs *ControlServer) AddProcess(ctx context.Context, pSet *pb.SetProc) (*pb.ProcStatus, error) {
 	p := pSet.Process
-	err := cs.chief.AddProcess(p.Name, *p)
-	if err != nil {
-		return nil, err
-	}
-	return &pb.Result{Description: "OK"}, nil
+	return cs.chief.AddProcess(p.Name, *p)
 }
 
-func (cs *ControlServer) UpdateProcess(ctx context.Context, pSet *pb.SetProc) (*pb.Result, error) {
+func (cs *ControlServer) UpdateProcess(ctx context.Context, pSet *pb.SetProc) (*pb.ProcStatus, error) {
 	p := pSet.Process
-	err := cs.chief.UpdateProcess(p.Name, *p)
-	if err != nil {
-		return nil, err
-	}
-	return &pb.Result{Description: "OK"}, nil
+	return cs.chief.UpdateProcess(p.Name, *p)
 }
 
 // AllProcesses returns all registered processes.
@@ -81,7 +73,7 @@ func (cs *ControlServer) AllProcesses(context.Context, *pb.Nope) (*pb.ProcessesS
 func (cs *ControlServer) Halt(context.Context, *pb.Nope) (*pb.Result, error) {
 	cs.chief.StopAll()
 	go func() {
-		time.Sleep(time.Second*2)
+		time.Sleep(time.Second * 2)
 		os.Exit(0)
 	}()
 	return &pb.Result{Description: "OK."}, nil

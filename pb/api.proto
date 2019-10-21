@@ -39,7 +39,7 @@ service ControlAPI {
     }
 
     // AddProcess adds process.
-    rpc AddProcess (SetProc) returns (Result) {
+    rpc AddProcess (SetProc) returns (ProcStatus) {
         option (google.api.http) = {
 			post: "/proc/add"
 			body: "*"
@@ -47,7 +47,7 @@ service ControlAPI {
     }
 
     // UpdateProcess updates process.
-    rpc UpdateProcess (SetProc) returns (Result) {
+    rpc UpdateProcess (SetProc) returns (ProcStatus) {
         option (google.api.http) = {
 			post: "/proc/update"
 			body: "*"
@@ -91,6 +91,7 @@ message ProcStatus {
     int32 pid = 1;
     string state = 2;
     Process process = 3;
+    bool exited = 4;
 }
 
 

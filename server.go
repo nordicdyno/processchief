@@ -41,7 +41,7 @@ func (cs *ControlServer) init(ctx context.Context) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("common addr: %cs\n", l.Addr())
+	fmt.Printf("process chief connection addr: %s\n", l.Addr())
 
 	grpcServer := grpc.NewServer()
 	pb.RegisterControlAPIServer(grpcServer, cs)

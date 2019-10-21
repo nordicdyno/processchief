@@ -17,19 +17,21 @@ type procHolder struct {
 	sync.RWMutex
 	status ProcStatus
 
-	cmd *exec.Cmd
+	cmd    *exec.Cmd
 	logCmd *exec.Cmd
-	fin chan struct{}
+	fin    chan struct{}
 }
 
 func (ph *procHolder) Status() ProcStatus {
 	ph.RLock()
 	s := ph.status
 	s.Pid = int32(ph.cmd.Process.Pid)
+	if ph.cmd.ProcessState != nil {
+		s.Exited = true
+	}
 	ph.RUnlock()
 	return s
 }
-
 
 func (ph *procHolder) setState(state string) {
 	ph.Lock()
