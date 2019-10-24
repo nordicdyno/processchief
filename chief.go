@@ -153,7 +153,6 @@ func (c *Chief) setProcess(name string, sp SetProc) (*ProcStatus, error) {
 			panic(err)
 		}
 		logCmd.Stdin = io.MultiReader(outPipe, errPipe)
-		logCmd.Dir = pEnv.WorkingDir
 		// logCmd.Stderr, _ = logCmd.StdoutPipe()
 		stdout := prefixer("<LOGGER> ["+name+"]: ", os.Stdout)
 		stderr := prefixer("<LOGGER> ["+name+"]: ", os.Stderr)

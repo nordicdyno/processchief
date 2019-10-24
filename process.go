@@ -50,3 +50,41 @@ func (ph *procHolder) getState() string {
 func (ph *procHolder) wait() error {
 	return ph.cmd.Wait()
 }
+
+type processCfg struct {
+	workDir string
+	env []string
+}
+
+type ProcOption func(*processCfg)
+
+func Env(s string) ProcOption {
+	return func(cfg *processCfg) {
+		cfg.env = append(cfg.env, s)
+	}
+}
+
+func WorkDir(s string) ProcOption {
+	return func(cfg *processCfg) {
+		cfg.workDir = s
+	}
+}
+
+
+func NewProcess(name string, commandLine string, opts ...ProcOption) SetProc {
+	cfg := &processCfg{}
+	for _, opt := range  opts {
+		opt(cfg)
+	}
+	p := &Process{
+		Name:        name,
+		CommandLine: commandLine,
+	}
+	return SetProc{
+		Process: p,
+		Env: &pb.ProcEnv{
+			EnvVars:              cfg.env,
+			WorkingDir:           cfg.workDir,
+		},
+	}
+}
