@@ -13,6 +13,8 @@ type ProcStatus = pb.ProcStatus
 
 type Process = pb.Process
 
+type SetProc = pb.SetProc
+
 type procHolder struct {
 	sync.RWMutex
 	status ProcStatus

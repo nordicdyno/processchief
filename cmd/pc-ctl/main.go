@@ -61,6 +61,7 @@ func main() {
 		cmdCommand  string
 		workDir     string
 		loggerCmd   string
+		envVars []string
 	)
 	nameFlag := func(cmd *cobra.Command) {
 		cmd.Flags().StringVarP(&processName, "name", "n",
@@ -74,6 +75,8 @@ func main() {
 			"", "working directory")
 		cmd.Flags().StringVarP(&loggerCmd, "logger", "l",
 			"", "command line to output log")
+		cmd.Flags().StringSliceVarP(&envVars, "env", "e",
+			nil, "environment variables")
 	}
 
 	addCmd := &cobra.Command{
@@ -84,8 +87,11 @@ func main() {
 				Process: &pb.Process{
 					Name:              processName,
 					CommandLine:       cmdCommand,
-					WorkingDir:        workDir,
 					LoggerCommandLine: loggerCmd,
+				},
+				Env: &pb.ProcEnv{
+					EnvVars:              envVars,
+					WorkingDir:        workDir,
 				},
 			}
 			res, err := client.AddProcess(ctx, p)
@@ -105,8 +111,11 @@ func main() {
 				Process: &pb.Process{
 					Name:              processName,
 					CommandLine:       cmdCommand,
-					WorkingDir:        workDir,
 					LoggerCommandLine: loggerCmd,
+				},
+				Env: &pb.ProcEnv{
+					EnvVars:              envVars,
+					WorkingDir:        workDir,
 				},
 			}
 			res, err := client.UpdateProcess(ctx, newSrv)

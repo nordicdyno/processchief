@@ -236,6 +236,20 @@
     "pbNope": {
       "type": "object"
     },
+    "pbProcEnv": {
+      "type": "object",
+      "properties": {
+        "envVars": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "workingDir": {
+          "type": "string"
+        }
+      }
+    },
     "pbProcName": {
       "type": "object",
       "properties": {
@@ -274,9 +288,6 @@
         },
         "loggerCommandLine": {
           "type": "string"
-        },
-        "workingDir": {
-          "type": "string"
         }
       }
     },
@@ -309,6 +320,9 @@
         },
         "process": {
           "$ref": "#/definitions/pbProcess"
+        },
+        "env": {
+          "$ref": "#/definitions/pbProcEnv"
         }
       }
     },

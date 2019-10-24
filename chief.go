@@ -93,20 +93,22 @@ func (c *Chief) ProcessSignal(name string, signal int32) error {
 	return svc.cmd.Process.Signal(syscall.Signal(signal))
 }
 
-func (c *Chief) UpdateProcess(name string, svc Process) (*ProcStatus, error) {
+func (c *Chief) UpdateProcess(name string, sp SetProc) (*ProcStatus, error) {
 	err := c.StopProcess(name)
 	if err != nil {
 		return nil, err
 	}
 	// possible logical race, but it'c not a problem, it just returns error
 	c.mu.Lock()
-	status, err := c.setProcess(name, svc)
+	status, err := c.setProcess(name, sp)
 	c.mu.Unlock()
 	return status, err
 }
 
-func (c *Chief) setProcess(name string, p Process) (*ProcStatus, error) {
+func (c *Chief) setProcess(name string, sp SetProc) (*ProcStatus, error) {
 	var err error
+	p := sp.Process
+	pEnv := sp.Env
 	// XXX: it'c oversimplification, because args could be with spaces like 'a b c'
 	cmdArgs := strings.Split(p.CommandLine, " ")
 	cmdArg0 := cmdArgs[0]
@@ -151,14 +153,15 @@ func (c *Chief) setProcess(name string, p Process) (*ProcStatus, error) {
 			panic(err)
 		}
 		logCmd.Stdin = io.MultiReader(outPipe, errPipe)
-		logCmd.Dir = p.WorkingDir
+		logCmd.Dir = pEnv.WorkingDir
 		// logCmd.Stderr, _ = logCmd.StdoutPipe()
 		stdout := prefixer("<LOGGER> ["+name+"]: ", os.Stdout)
 		stderr := prefixer("<LOGGER> ["+name+"]: ", os.Stderr)
 		logCmd.Stdout = stdout
 		logCmd.Stderr = stderr
 	}
-	cmd.Dir = p.WorkingDir
+	cmd.Dir = pEnv.WorkingDir
+	cmd.Env = pEnv.EnvVars
 
 	err = cmd.Start()
 	if err != nil {
@@ -176,7 +179,7 @@ func (c *Chief) setProcess(name string, p Process) (*ProcStatus, error) {
 	}
 
 	procHolder := &procHolder{
-		status: ProcStatus{Process: &p},
+		status: ProcStatus{Process: p},
 
 		cmd:    cmd,
 		logCmd: logCmd,
@@ -211,7 +214,7 @@ func (c *Chief) setProcess(name string, p Process) (*ProcStatus, error) {
 		startErr = nil
 		status = &ProcStatus{
 			Pid:     int32(proc.Pid),
-			Process: &p,
+			Process: p,
 			State:   "started",
 		}
 
@@ -235,15 +238,15 @@ func (c *Chief) setProcess(name string, p Process) (*ProcStatus, error) {
 	return status, startErr
 }
 
-func (c *Chief) AddProcess(name string, p Process) (*ProcStatus, error) {
+func (c *Chief) AddProcess(name string, sp SetProc) (*ProcStatus, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	if _, ok := c.procs[p.Name]; ok {
+	if _, ok := c.procs[name]; ok {
 		return nil, fmt.Errorf("'%v' already registered", name)
 	}
 
-	return c.setProcess(name, p)
+	return c.setProcess(name, sp)
 }
 
 func (c *Chief) AllProcesses() []ProcStatus {

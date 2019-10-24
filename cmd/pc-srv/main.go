@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -29,5 +30,6 @@ func main() {
 
 	<-c
 	srv.Stop(ctx)
+	fmt.Println("StopAll at the end of main")
 	chief.StopAll()
 }

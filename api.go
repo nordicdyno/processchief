@@ -51,12 +51,12 @@ func (cs *ControlServer) LoggerSignal(ctx context.Context, svcSig *pb.Signal) (*
 
 func (cs *ControlServer) AddProcess(ctx context.Context, pSet *pb.SetProc) (*pb.ProcStatus, error) {
 	p := pSet.Process
-	return cs.chief.AddProcess(p.Name, *p)
+	return cs.chief.AddProcess(p.Name, *pSet)
 }
 
 func (cs *ControlServer) UpdateProcess(ctx context.Context, pSet *pb.SetProc) (*pb.ProcStatus, error) {
 	p := pSet.Process
-	return cs.chief.UpdateProcess(p.Name, *p)
+	return cs.chief.UpdateProcess(p.Name, *pSet)
 }
 
 // AllProcesses returns all registered processes.

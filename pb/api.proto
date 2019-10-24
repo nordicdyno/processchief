@@ -82,9 +82,15 @@ message Signal {
     int32 signal = 2;
 }
 
+message ProcEnv {
+    repeated string envVars = 1;
+    string workingDir = 2;
+}
+
 message SetProc {
     bool create = 1;
     Process process = 2;
+    ProcEnv env = 3;
 }
 
 message ProcStatus {
@@ -99,7 +105,6 @@ message Process {
     string name = 1;
     string commandLine = 2;
     string loggerCommandLine = 3;
-    string workingDir = 4;
 }
 
 message ProcName {
